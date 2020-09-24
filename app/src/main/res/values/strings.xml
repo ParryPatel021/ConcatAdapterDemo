@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">MergeAdapterDemo</string>
+    <string name="action_settings">Settings</string>
+
+    <!--Camera, Gallery, Permission Text-->
+    <string name="text_discard_image">Discard Image</string>
+    <string name="text_open_camera">Open Camera</string>
+    <string name="text_open_gallery">Open Gallery</string>
+    <string name="text_choose_an_option">Choose an option</string>
+    <string name="permission_denied">Permission Denied</string>
+    <string name="request_camera_permission">We need Camera &amp; Gallery permissions for This App</string>
+    <string name="on_denied_permission">If you reject permission,you can not use this service
+        <br />
+        Please turn on permissions at [Setting] > [Permission]
+    </string>
+    <string name="msg_device_not_has_camera">Your device does not has Camera Feature</string>
+
+    <string name="text_done">Done</string>
+    <string name="msg_reached_image_selection_limit">You cannot select more than %1$s images. Please deselect another image before trying to select again.</string>
+
+</resources>
