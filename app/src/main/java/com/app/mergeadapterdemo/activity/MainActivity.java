@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements AddImageAdapter.O
     private int totalPhotosLimit = 10;
     private ArrayList<Image> selectedImageList;
     private ArrayList<Image> selectedResultList;
-    private ConcatAdapter concatAdapter;
     private boolean isAllowed = false;
 
     private Activity getActivity() {
@@ -60,7 +59,10 @@ public class MainActivity extends AppCompatActivity implements AddImageAdapter.O
     private void initialization() {
         selectedImageList = new ArrayList<>();
         selectedResultList = new ArrayList<>();
+
         prepareImageSelectionRecyclerView();
+
+        //Runtime Permission
         getPermissionForImageSelection();
     }
 
@@ -141,17 +143,26 @@ public class MainActivity extends AppCompatActivity implements AddImageAdapter.O
 
     private void prepareImageSelectionRecyclerView() {
         if (selectedImageList != null) {
+
+            /**Sticky Add Image Adapter
+             */
             if (addImageAdapter == null) {
                 addImageAdapter = new AddImageAdapter(getActivity(), this);
             }
+
+            /**All images Holder Adapter*/
             if (imageSelectionAdapter == null) {
                 imageSelectionAdapter = new ImageSelectionAdapter(getActivity(), this);
             }
 
             imageSelectionAdapter.doRefresh(selectedImageList);
 
-            //Concat Adapter
-            concatAdapter = new ConcatAdapter(addImageAdapter, imageSelectionAdapter);
+            /**
+             Concat Adapter:
+
+             This will concat our AddImageAdapter & ImageSelectionAdapter into Single Adapter
+             and add into RecyclerView */
+            ConcatAdapter concatAdapter = new ConcatAdapter(addImageAdapter, imageSelectionAdapter);
 
             binding.recyclerGrid.setHasFixedSize(true);
             GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
@@ -164,15 +175,15 @@ public class MainActivity extends AppCompatActivity implements AddImageAdapter.O
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        /*Camera & Gallery Result*/
+        /** Camera & Gallery Result */
         if (requestCode == ITEM_CAMERA && resultCode == RESULT_OK && data != null) {
             if (data.getParcelableArrayListExtra(Config.EXTRA_IMAGES) != null) {
                 selectedResultList = data.getParcelableArrayListExtra(Config.EXTRA_IMAGES);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     try {
-                    if (selectedResultList != null) {
-                        selectedResultList.get(0).setPath(ContentUriUtils.getFilePath(getActivity(), selectedResultList.get(0).getUri()));
-                    }
+                        if (selectedResultList != null) {
+                            selectedResultList.get(0).setPath(ContentUriUtils.getFilePath(getActivity(), selectedResultList.get(0).getUri()));
+                        }
                     } catch (URISyntaxException e) {
                         e.printStackTrace();
                     }
@@ -191,6 +202,11 @@ public class MainActivity extends AppCompatActivity implements AddImageAdapter.O
         }
     }
 
+    /**
+     * Add Selected OR Captures Images into Adapter
+     *
+     * @param selectedResult Selected OR Captures Images
+     */
     private void setResultToList(ArrayList<Image> selectedResult) {
         selectedImageList.addAll(selectedResult);
         selectedResultList.clear();
@@ -210,6 +226,11 @@ public class MainActivity extends AppCompatActivity implements AddImageAdapter.O
         }
     }
 
+    /**
+     * Remove Image from Adapter
+     *
+     * @param position Position of image to be removed
+     */
     @Override
     public void onCloseClick(int position) {
         selectedImageList.remove(position);

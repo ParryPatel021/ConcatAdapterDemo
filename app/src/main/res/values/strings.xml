@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MergeAdapterDemo</string>
+    <string name="app_name">Concat Adapter Demo</string>
     <string name="action_settings">Settings</string>
 
     <!--Camera, Gallery, Permission Text-->
